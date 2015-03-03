@@ -46,7 +46,7 @@ var award = {
         {
             "title": "\"Above and Beyond\" Certificate of Achievement Award from CIBER",
             "dates": "2008",
-            "images": ["images/a_and_b.png", "images/awards_cup.jpg"]
+            "images": ["images/a_and_b.png"]
         },
         {
             "title": "SAIC/Georgia Tech Best Student Paper Award",
