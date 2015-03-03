@@ -26,8 +26,8 @@ var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</sp
 var HTMLbioPic = '<img src="%data%" class="biopic">';
 var HTMLWelcomeMsg = '<span class="welcome-message">%data%</span>';
 
-var HTMLskillsStart = '<h3 id="skillsH3">Skills at a Glance:</h3><ul id="skills" class="flex-box"></ul>';
-var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
+var HTMLskillsStart = '<h3 id="skillsH3">Skills at a Glance:</h3><ul id="skills"></ul>';
+var HTMLskills = '<li style="display:block"><span class="white-text">%data%</span></li>';
 
 var HTMLworkStart = '<div class="work-entry"></div>';
 var HTMLworkEmployer = '<a href="#">%data%';
@@ -40,7 +40,14 @@ var HTMLprojectStart = '<div class="project-entry"></div>';
 var HTMLprojectTitle = '<a href="#">%data%</a>';
 var HTMLprojectDates = '<div class="date-text">%data%</div>';
 var HTMLprojectDescription = '<p><br>%data%</p>';
-var HTMLprojectImage = '<img src="%data%">';
+var HTMLprojectImage = '<a href="#" style="display:inline"><img width="250" height="187" src="%data%"></a>';
+
+var HTMLawardStart = '<div class="award-entry"></div>';
+var HTMLawardTitle = '<a href="#">%data%</a>';
+var HTMLawardDates = '<div class="date-text">%data%</div>';
+var HTMLawardImage = '<img width="250" height="187" src="%data%">';
+
+
 
 var HTMLschoolStart = '<div class="education-entry"></div>';
 var HTMLschoolName = '<a href="#">%data%';
@@ -64,9 +71,49 @@ The International Name challenge in Lesson 2 where you'll create a function that
 */
 $(document).ready(function() {
   $('button').click(function() {
-    var iName = inName() || function(){};
-    $('#name').html(iName);  
+      var iName = inName() || function () { };
+
+      $('#name').html(iName);  
   });
+
+
+  initializeMap();
+
+
+  $("div[class='project-entry'] img").on({
+      mousemove: function (e) {
+          $(this).next('img').css({
+              top: e.pageY - 260,
+              left: e.pageX + 10
+          });
+      },
+      mouseenter: function () {
+          var big = $('<img />', { 'class': 'big_img', src: this.src });
+          $(this).after(big);
+      },
+      mouseleave: function () {
+          $('.big_img').remove();
+      }
+  });
+
+  $("div[class='award-entry'] img").on({
+      mousemove: function (e) {
+          $(this).next('img').css({
+              top: e.pageY - 260,
+              left: e.pageX + 10
+          });
+      },
+      mouseenter: function () {
+          var big = $('<img />', { 'class': 'big_img', src: this.src });
+          $(this).after(big);
+      },
+      mouseleave: function () {
+          $('.big_img').remove();
+      }
+  });
+ 
+
+  
 });
 
 /*
@@ -109,6 +156,8 @@ function initializeMap() {
     disableDefaultUI: true
   };
 
+  
+
   // This next line makes `map` a new Google Map JavaScript Object and attaches it to
   // <div id="map">, which is appended as part of an exercise late in the course.
   map = new google.maps.Map(document.querySelector('#map'), mapOptions);
@@ -148,6 +197,7 @@ function initializeMap() {
   */
   function createMapMarker(placeData) {
 
+      console.log("places: " + placeData);
     // The next lines save location data from the search result object to local variables
     var lat = placeData.geometry.location.lat();  // latitude from the place service
     var lon = placeData.geometry.location.lng();  // longitude from the place service
@@ -170,7 +220,8 @@ function initializeMap() {
 
     // hmmmm, I wonder what this is about...
     google.maps.event.addListener(marker, 'click', function() {
-      // your code goes here!
+        // your code goes here!
+        infoWindow.open(map, marker);
     });
 
     // this is where the pin actually gets added to the map.
@@ -233,11 +284,11 @@ Uncomment the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
+window.addEventListener('resize', function(e) {
   // Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+  map.fitBounds(mapBounds);
+});
